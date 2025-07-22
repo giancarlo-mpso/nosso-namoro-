@@ -15,22 +15,8 @@
             align-items: center;
             height: 100vh;
             overflow-x: hidden;
-
-<script>
-    const links = document.querySelectorAll('.nav a');
-    links.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            const href = this.getAttribute('href');
-            const container = document.querySelector('.container');
-            container.classList.add('slide-out');
-            setTimeout(() => {
-                window.location.href = href;
-            }, 500); // mesmo tempo da animação (0.5s)
-        });
-    });
-</script>
         }
+
         .container {
             background: white;
             border-radius: 20px;
@@ -39,75 +25,83 @@
             text-align: center;
             max-width: 600px;
             position: relative;
-            animation: slide-in 1.0s ease forwards;
+            animation: slide-in 0.7s ease forwards;
         }
+
         .slide-out {
-    animation: slide-out 0.9s forwards;
-}
+            animation: slide-out 0.7s forwards;
+        }
+
         h1 {
             color: #c71585;
             margin-bottom: 1rem;
         }
+
         p {
             color: #555;
         }
+
         .nav {
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
         }
+
         .nav a {
             text-decoration: none;
             font-size: 2rem;
             color: #c71585;
             transition: transform 0.3s;
         }
+
         .nav a:hover {
             transform: scale(1.2);
         }
+
         .date {
-            position: absolute
-            left: 50%; 
-            transform: translateX(-50%); 
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             bottom: 50px;
             color: #c71585;
-            font-weight: hydrophilia;
+            font-weight: bold;
             font-size: 0.9rem;
         }
+
         img {
             max-width: 100%;
             border-radius: 10px;
             margin-top: 1rem;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-@keyframes slide-in {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
-@keyframes slide-out {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-}
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-out {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Minha declaração</h1>
-        <p>Foi nesse dia que criei coragem e disse pra você, bem direto: "gosto de tu", e a partir dai tudo mudou...</p>
+        <p>Foi nesse dia que criei coragem e disse pra você, bem direto: "gosto de tu", e a partir daí tudo mudou...</p>
         <img src="images/beijo.jpg" alt="Nosso Primeiro Beijo">
         <div class="date">01/04/2025</div>
         <div class="nav">
@@ -115,5 +109,21 @@
             <a href="encontro.html">➡️</a>
         </div>
     </div>
+
+    <script>
+        const links = document.querySelectorAll('.nav a');
+        links.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const href = this.getAttribute('href');
+                const container = document.querySelector('.container');
+                container.classList.add('slide-out');
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 700);
+            });
+        });
+    </script>
 </body>
 </html>
+
