@@ -15,6 +15,21 @@
             align-items: center;
             height: 100vh;
             overflow-x: hidden;
+
+<script>
+    const links = document.querySelectorAll('.nav a');
+    links.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const href = this.getAttribute('href');
+            const container = document.querySelector('.container');
+            container.classList.add('slide-out');
+            setTimeout(() => {
+                window.location.href = href;
+            }, 500); // mesmo tempo da animação (0.5s)
+        });
+    });
+</script>
         }
         .container {
             background: white;
