@@ -108,4 +108,202 @@
         .content-popup img {
             width: 100%;
             border-radius: 8px;
-            margin
+            margin-bottom: 10px;
+        }
+
+        .content-popup h3 {
+            margin: 5px 0;
+            color: #c71585;
+            font-size: 1.1rem;
+        }
+
+        .content-popup p {
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* Animações de Zoom */
+        .anim-in {
+            display: block !important;
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform-origin: bottom center;
+        }
+
+        .anim-out {
+            animation: zoomOut 0.3s ease-in forwards;
+            transform-origin: bottom center;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: translateX(-50%) scale(0.1); }
+            to { opacity: 1; transform: translateX(-50%) scale(1); }
+        }
+
+        @keyframes zoomOut {
+            from { opacity: 1; transform: translateX(-50%) scale(1); }
+            to { opacity: 0; transform: translateX(-50%) scale(0.1); }
+        }
+
+        .counter-section {
+            margin-top: auto;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .clock-btn {
+            background: white;
+            border: 2px solid #c71585;
+            color: #c71585;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #contador-box {
+            margin-top: 15px;
+            display: none;
+        }
+
+        #contador {
+            font-size: 1.4rem;
+            color: #c71585;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .timeline-wrapper { height: 400px; width: 4px; margin: 40px 0; }
+            .timeline-line { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+            .points-container { flex-direction: column; height: 100%; align-items: center; }
+            .point-date { left: 50px; bottom: 10px; }
+            .content-popup { left: 160px; bottom: -50px; transform: translateY(-50%); }
+            .content-popup::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nossa História 💖</h1>
+
+    <div class="timeline-wrapper">
+        <div class="timeline-line"></div>
+        <div class="points-container">
+            <div class="point" onclick="togglePopup(0)">💬<span class="point-date">01/04</span>
+                <div id="pop-0" class="content-popup">
+                    <img src="images/declaracao.jpg">
+                    <h3>Minha Declaração</h3>
+                    <p>Foi nesse dia que disse pra você: "gosto de tu".</p>
+                </div>
+            </div>
+
+            <div class="point" onclick="togglePopup(1)">☕<span class="point-date">17/04</span>
+                <div id="pop-1" class="content-popup">
+                    <img src="images/encontro.jpg">
+                    <h3>Primeiro Encontro</h3>
+                    <p>Fomos numa cafeteria e eu estava super nervoso!</p>
+                </div>
+            </div>
+
+            <div class="point" onclick="togglePopup(2)">💋<span class="point-date">30/04</span>
+                <div id="pop-2" class="content-popup">
+                    <img src="images/beijo.jpg">
+                    <h3>Primeiro Beijo</h3>
+                    <p>Na escola, um momento inesquecível só nosso.</p>
+                </div>
+            </div>
+
+            <div class="point" onclick="togglePopup(3)">🎬<span class="point-date">04/05</span>
+                <div id="pop-3" class="content-popup">
+                    <img src="images/filme.jpg">
+                    <h3>Primeiro Filme</h3>
+                    <p>Assistimos "Pecadores" juntos!</p>
+                </div>
+            </div>
+
+            <div class="point" onclick="togglePopup(4)">🎂<span class="point-date">30/05</span>
+                <div id="pop-4" class="content-popup">
+                    <img src="images/aniversario.jpg">
+                    <h3>Seu Aniversário</h3>
+                    <p>Flores, brincos e conhecendo seus pais.</p>
+                </div>
+            </div>
+
+            <div class="point" onclick="togglePopup(5)">💍<span class="point-date">12/06</span>
+                <div id="pop-5" class="content-popup">
+                    <img src="images/pedido.jpg">
+                    <h3>Pedido de Namoro</h3>
+                    <p>No Parque da Sementeira, você disse SIM!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="counter-section">
+        <button class="clock-btn" onclick="toggleContador()">⌚</button>
+        <div id="contador-box">
+            <p id="contador"></p>
+            <p style="color: #555; font-size: 0.9rem;">...e contando!</p>
+        </div>
+    </div>
+
+    <script>
+        let abertoAtualmente = null;
+
+        function togglePopup(index) {
+            const popup = document.getElementById(`pop-${index}`);
+            const pontos = document.querySelectorAll('.point');
+
+            // Se clicar em um que já está aberto, fecha
+            if (abertoAtualmente === index) {
+                fechar(popup);
+                pontos[index].classList.remove('active');
+                abertoAtualmente = null;
+                return;
+            }
+
+            // Se clicar em outro, fecha o que estiver aberto
+            if (abertoAtualmente !== null) {
+                const anterior = document.getElementById(`pop-${abertoAtualmente}`);
+                fechar(anterior);
+                pontos[abertoAtualmente].classList.remove('active');
+            }
+
+            // Abre o novo
+            popup.classList.remove('anim-out');
+            popup.classList.add('anim-in');
+            pontos[index].classList.add('active');
+            abertoAtualmente = index;
+        }
+
+        function fechar(el) {
+            el.classList.remove('anim-in');
+            el.classList.add('anim-out');
+            setTimeout(() => {
+                if (el.classList.contains('anim-out')) {
+                    el.style.display = 'none';
+                }
+            }, 300);
+        }
+
+        function toggleContador() {
+            const box = document.getElementById('contador-box');
+            if (box.style.display === 'block') {
+                box.classList.remove('anim-in');
+                box.classList.add('anim-out');
+                setTimeout(() => { box.style.display = 'none'; }, 300);
+            } else {
+                const dataInicio = new Date("2025-06-12"); 
+                const hoje = new Date();
+                const dias = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
+                document.getElementById("contador").innerText = `💗 ${dias} dias 💗`;
+                box.style.display = 'block';
+                box.classList.remove('anim-out');
+                box.classList.add('anim-in');
+            }
+        }
+    </script>
+</body>
+</html>
