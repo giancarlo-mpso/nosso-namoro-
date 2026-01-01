@@ -119,7 +119,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             height: 80px;
         }
 
@@ -131,8 +131,9 @@
             position: relative;
             background: white;
             cursor: pointer;
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
+            z-index: 5;
         }
 
         .hand {
@@ -162,15 +163,19 @@
 
         .spin-hands .hour { animation: spin 1s linear infinite; }
         .spin-hands .minute { animation: spin 0.5s linear infinite; }
-        .move-left { transform: translateX(-100px); }
+        
+        .move-left { transform: translateX(-40px); }
 
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         #contador-box {
             opacity: 0;
-            transform: translateX(20px);
-            transition: 0.5s;
+            transform: translateX(-20px);
+            transition: 0.6s ease;
             pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         #contador-box.visible {
@@ -179,7 +184,7 @@
             pointer-events: auto;
         }
 
-        #contador { font-weight: bold; color: #c71585; font-size: 1.3rem; margin: 0; }
+        #contador { font-weight: bold; color: #c71585; font-size: 1.3rem; margin: 0; white-space: nowrap; }
 
         @media (max-width: 600px) {
             .timeline-wrapper { height: 500px; width: 4px; margin-left: 30px; align-self: flex-start; }
@@ -190,7 +195,8 @@
             .content-popup { left: 175px; top: 50%; transform: translateY(-50%); width: 220px; }
             .content-popup::after { top: 50%; left: -10px; transform: translateY(-50%); border-right: 10px solid white; border-bottom: 10px solid transparent; border-top: 10px solid transparent; }
             .counter-section { flex-direction: column; height: auto; gap: 10px; }
-            .move-left { transform: translateY(-10px); }
+            .move-left { transform: translateY(-5px); }
+            #contador-box { align-items: center; transform: translateY(10px); }
         }
     </style>
 </head>
