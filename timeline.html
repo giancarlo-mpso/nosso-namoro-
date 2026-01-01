@@ -83,13 +83,31 @@
             width: 85%;
             max-width: 500px;
             border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(242, 34, 204, 0.15);
+            box-shadow: 0 10px 25px rgba(242, 34, 204, 0.2);
             padding: 1.5rem;
             text-align: center;
             min-height: 250px;
             display: none;
-            animation: fadeIn 0.5s ease;
             margin-bottom: 30px;
+        }
+
+        /* Animações de Entrada e Saída */
+        .anim-in {
+            animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .anim-out {
+            animation: zoomOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.1); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes zoomOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.1); }
         }
 
         .content-display img {
@@ -125,25 +143,15 @@
             outline: none;
         }
 
-        .clock-btn:active {
-            transform: scale(0.9);
-        }
-
         #contador-box {
             margin-top: 20px;
             display: none;
-            animation: fadeIn 0.5s ease;
         }
 
         #contador {
             font-size: 1.4rem;
             color: #c71585;
             font-weight: bold;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 600px) {
@@ -161,12 +169,12 @@
     <div class="timeline-wrapper">
         <div class="timeline-line"></div>
         <div class="points-container">
-            <div class="point" onclick="showEvent(0)"><span class="point-date">01/04</span>💬</div>
-            <div class="point" onclick="showEvent(1)"><span class="point-date">17/04</span>☕</div>
-            <div class="point" onclick="showEvent(2)"><span class="point-date">30/04</span>💋</div>
-            <div class="point" onclick="showEvent(3)"><span class="point-date">04/05</span>🎬</div>
-            <div class="point" onclick="showEvent(4)"><span class="point-date">30/05</span>🎂</div>
-            <div class="point" onclick="showEvent(5)"><span class="point-date">12/06</span>💍</div>
+            <div class="point" id="pt-0" onclick="showEvent(0)"><span class="point-date">01/04</span>💬</div>
+            <div class="point" id="pt-1" onclick="showEvent(1)"><span class="point-date">17/04</span>☕</div>
+            <div class="point" id="pt-2" onclick="showEvent(2)"><span class="point-date">30/04</span>💋</div>
+            <div class="point" id="pt-3" onclick="showEvent(3)"><span class="point-date">04/05</span>🎬</div>
+            <div class="point" id="pt-4" onclick="showEvent(4)"><span class="point-date">30/05</span>🎂</div>
+            <div class="point" id="pt-5" onclick="showEvent(5)"><span class="point-date">12/06</span>💍</div>
         </div>
     </div>
 
@@ -178,8 +186,7 @@
     </div>
 
     <div class="counter-section">
-        <button class="clock-btn" onclick="toggleContador()" title="Ver tempo">⌚</button>
-        
+        <button class="clock-btn" onclick="toggleContador()">⌚</button>
         <div id="contador-box">
             <p id="contador"></p>
             <p style="color: #555; font-size: 0.9rem;">...e contando! Infinitos dias ao seu lado.</p>
@@ -196,37 +203,71 @@
             { title: "Pedido de Namoro", text: "No Parque da Sementeira, ao pôr do sol, você disse SIM!", img: "images/pedido.jpg", date: "12/06/2025" }
         ];
 
+        let currentActiveIndex = -1;
+
         function showEvent(index) {
             const display = document.getElementById('display');
             const points = document.querySelectorAll('.point');
-            
-            display.style.display = 'block';
+
+            // Se clicar no mesmo que já está aberto, ele fecha
+            if (currentActiveIndex === index) {
+                fecharElemento(display);
+                points[index].classList.remove('active');
+                currentActiveIndex = -1;
+                return;
+            }
+
+            // Se houver outro aberto, fecha primeiro e depois abre o novo
+            if (display.style.display === 'block') {
+                display.classList.remove('anim-in');
+                display.classList.add('anim-out');
+                
+                setTimeout(() => {
+                    atualizarConteudo(index);
+                    display.classList.remove('anim-out');
+                    display.classList.add('anim-in');
+                }, 400);
+            } else {
+                atualizarConteudo(index);
+                display.style.display = 'block';
+                display.classList.add('anim-in');
+            }
+
             points.forEach(p => p.classList.remove('active'));
             points[index].classList.add('active');
+            currentActiveIndex = index;
+        }
 
+        function atualizarConteudo(index) {
             document.getElementById('event-title').innerText = events[index].title;
             document.getElementById('event-text').innerText = events[index].text;
             document.getElementById('event-img').src = events[index].img;
             document.getElementById('event-date').innerText = events[index].date;
-            
-            display.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            document.getElementById('display').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function fecharElemento(el) {
+            el.classList.remove('anim-in');
+            el.classList.add('anim-out');
+            setTimeout(() => {
+                el.style.display = 'none';
+                el.classList.remove('anim-out');
+            }, 400);
         }
 
         function toggleContador() {
             const box = document.getElementById('contador-box');
-            
             if (box.style.display === 'block') {
-                box.style.display = 'none';
+                fecharElemento(box);
             } else {
-                box.style.display = 'block';
-                
                 const dataInicio = new Date("2025-06-12"); 
                 const hoje = new Date();
                 const diferenca = hoje - dataInicio;
                 const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-                
                 document.getElementById("contador").innerText = `💗 Estamos juntos há ${dias} dias 💗`;
                 
+                box.style.display = 'block';
+                box.classList.add('anim-in');
                 box.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
