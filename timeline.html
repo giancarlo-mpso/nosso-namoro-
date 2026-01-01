@@ -25,7 +25,7 @@
         .timeline-wrapper {
             width: 90%;
             max-width: 900px;
-            margin: 50px 0;
+            margin: 80px 0;
             position: relative;
         }
 
@@ -62,37 +62,37 @@
             font-size: 1.2rem;
         }
 
-        .point:hover, .point.active {
-            transform: scale(1.1);
+        .point.active {
             background: #c71585;
             color: white;
         }
 
         .point-date {
             position: absolute;
-            top: -25px;
-            font-size: 0.8rem;
+            top: -30px;
+            font-size: 0.85rem;
             color: #c71585;
             font-weight: bold;
             white-space: nowrap;
         }
 
-        /* --- Estilo do Balão (Desktop: Abre para Baixo) --- */
+        /* --- Estilo do Balão --- */
         .content-popup {
             position: absolute;
-            top: 60px; /* Aparece abaixo no PC */
+            top: 65px; 
             left: 50%;
             transform: translateX(-50%);
-            width: 260px;
+            width: 280px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(242, 34, 204, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             padding: 15px;
             display: none;
-            z-index: 100;
+            z-index: 999;
             text-align: center;
         }
 
+        /* Setinha do balão para cima (PC) */
         .content-popup::after {
             content: '';
             position: absolute;
@@ -106,10 +106,25 @@
 
         .content-popup img {
             width: 100%;
-            border-radius: 8px;
+            height: auto;
+            border-radius: 10px;
             margin-bottom: 10px;
-            max-height: 180px;
-            object-fit: cover;
+            display: block;
+        }
+
+        .content-popup h3 {
+            margin: 10px 0 5px 0;
+            color: #c71585;
+            font-size: 1.2rem;
+            display: block;
+        }
+
+        .content-popup p {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.4;
+            margin: 0;
+            display: block;
         }
 
         /* Animações */
@@ -134,15 +149,14 @@
             to { opacity: 0; transform: translateX(-50%) scale(0.1); }
         }
 
-        /* --- Configuração Celular (Mobile) --- */
+        /* --- Responsivo Celular --- */
         @media (max-width: 600px) {
             .timeline-wrapper {
-                height: 500px;
+                height: 550px;
                 width: 4px;
-                margin-left: 40px; /* Linha vai para a esquerda */
+                margin-left: 30px;
                 align-self: flex-start;
             }
-
             .timeline-line {
                 width: 4px;
                 height: 100%;
@@ -150,29 +164,25 @@
                 top: 0;
                 transform: none;
             }
-
             .points-container {
                 flex-direction: column;
                 height: 100%;
                 align-items: flex-start;
             }
-
             .point {
-                left: -20px; /* Alinha o círculo com a linha na esquerda */
+                left: -22px;
             }
-
             .point-date {
-                left: 50px;
-                top: 12px;
+                left: 55px;
+                top: 10px;
             }
-
             .content-popup {
-                left: 170px; /* Abre para a direita */
+                left: 175px; 
                 top: 50%;
                 transform: translateY(-50%);
-                width: 220px;
+                width: 240px;
             }
-
+            /* Ajuste da setinha para o lado no celular */
             .content-popup::after {
                 top: 50%;
                 left: -10px;
@@ -180,24 +190,22 @@
                 border-top: 10px solid transparent;
                 border-bottom: 10px solid transparent;
                 border-right: 10px solid white;
+                border-bottom: none;
                 border-left: none;
             }
-
             @keyframes zoomIn {
                 from { opacity: 0; transform: translateY(-50%) scale(0.1); }
                 to { opacity: 1; transform: translateY(-50%) scale(1); }
             }
-
             @keyframes zoomOut {
                 from { opacity: 1; transform: translateY(-50%) scale(1); }
                 to { opacity: 0; transform: translateY(-50%) scale(0.1); }
             }
-            
             .anim-in, .anim-out { transform-origin: left center; }
         }
 
         .counter-section {
-            margin: 40px 0;
+            margin: 50px 0;
             text-align: center;
         }
 
@@ -205,10 +213,10 @@
             background: white;
             border: 2px solid #c71585;
             color: #c71585;
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
@@ -279,8 +287,8 @@
     <div class="counter-section">
         <button class="clock-btn" onclick="toggleContador()">⌚</button>
         <div id="contador-box">
-            <p id="contador" style="font-weight: bold; color: #c71585; font-size: 1.2rem;"></p>
-            <p style="color: #555; font-size: 0.8rem;">...e contando!</p>
+            <p id="contador" style="font-weight: bold; color: #c71585; font-size: 1.4rem;"></p>
+            <p style="color: #555; font-size: 0.9rem;">...e contando!</p>
         </div>
     </div>
 
@@ -313,7 +321,9 @@
             el.classList.remove('anim-in');
             el.classList.add('anim-out');
             setTimeout(() => {
-                if (el.classList.contains('anim-out')) el.style.display = 'none';
+                if (el.classList.contains('anim-out')) {
+                    el.style.display = 'none';
+                }
             }, 300);
         }
 
