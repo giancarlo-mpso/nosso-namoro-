@@ -23,11 +23,10 @@
             text-align: center;
         }
 
-        /* Container da Linha do Tempo */
         .timeline-wrapper {
             width: 90%;
             max-width: 800px;
-            margin: 40px 0;
+            margin: 60px 0;
             position: relative;
             padding: 20px 0;
         }
@@ -79,7 +78,6 @@
             white-space: nowrap;
         }
 
-        /* Card de exibição */
         .content-display {
             background: white;
             width: 85%;
@@ -89,25 +87,23 @@
             padding: 1.5rem;
             text-align: center;
             min-height: 250px;
+            display: none;
             animation: fadeIn 0.5s ease;
+            margin-bottom: 30px;
         }
 
         .content-display img {
             max-width: 100%;
             border-radius: 10px;
             margin: 10px 0;
-            max-height: 200px;
+            max-height: 250px;
         }
 
-        /* Contador de Dias */
         .counter-section {
-            margin-top: 40px;
+            margin-top: 20px;
             margin-bottom: 40px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 15px;
             text-align: center;
-            border: 1px dashed #f2c;
         }
 
         #contador {
@@ -129,7 +125,7 @@
         }
 
         @media (max-width: 600px) {
-            .timeline-wrapper { height: 350px; width: 40px; }
+            .timeline-wrapper { height: 350px; width: 40px; margin: 40px 0; }
             .timeline-line { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
             .points-container { flex-direction: column; height: 100%; }
             .point-date { left: 45px; top: 8px; }
@@ -143,7 +139,7 @@
     <div class="timeline-wrapper">
         <div class="timeline-line"></div>
         <div class="points-container">
-            <div class="point active" onclick="showEvent(0)"><span class="point-date">01/04</span>💬</div>
+            <div class="point" onclick="showEvent(0)"><span class="point-date">01/04</span>💬</div>
             <div class="point" onclick="showEvent(1)"><span class="point-date">17/04</span>☕</div>
             <div class="point" onclick="showEvent(2)"><span class="point-date">30/04</span>💋</div>
             <div class="point" onclick="showEvent(3)"><span class="point-date">04/05</span>🎬</div>
@@ -153,10 +149,10 @@
     </div>
 
     <div id="display" class="content-display">
-        <h2 id="event-title">Minha Declaração</h2>
-        <p id="event-text">Foi nesse dia que criei coragem e disse pra você, bem direto: "gosto de tu", e a partir daí tudo mudou...</p>
-        <img id="event-img" src="images/declaracao.jpg" alt="Foto do momento">
-        <div id="event-date" style="font-weight: bold; color: #c71585; margin-top: 10px;">01/04/2025</div>
+        <h2 id="event-title"></h2>
+        <p id="event-text"></p>
+        <img id="event-img" src="" alt="">
+        <div id="event-date" style="font-weight: bold; color: #c71585; margin-top: 10px;"></div>
     </div>
 
     <div class="counter-section">
@@ -175,7 +171,10 @@
         ];
 
         function showEvent(index) {
+            const display = document.getElementById('display');
             const points = document.querySelectorAll('.point');
+            
+            display.style.display = 'block';
             points.forEach(p => p.classList.remove('active'));
             points[index].classList.add('active');
 
@@ -183,17 +182,15 @@
             document.getElementById('event-text').innerText = events[index].text;
             document.getElementById('event-img').src = events[index].img;
             document.getElementById('event-date').innerText = events[index].date;
+            
+            display.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Lógica do Contador
         function atualizarContador() {
-            const dataInicio = new Date("2025-06-12"); // Coloquei a data do pedido, ajuste se quiser a da declaração
+            const dataInicio = new Date("2025-06-12"); 
             const hoje = new Date();
             const diferenca = hoje - dataInicio;
             const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-            
-            // Se a data ainda não chegou (pois você usou datas de 2025), o contador mostrará 0 ou negativo.
-            // Para teste, se quiser ver funcionando hoje, mude o ano para 2024.
             document.getElementById("contador").innerText = `💗 Estamos juntos há ${dias} dias 💗`;
         }
 
