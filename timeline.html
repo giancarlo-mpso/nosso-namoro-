@@ -18,14 +18,14 @@
 
         h1 {
             color: #c71585;
-            margin-top: 2rem;
+            margin: 2rem 0;
             text-align: center;
         }
 
         .timeline-wrapper {
             width: 90%;
-            max-width: 800px;
-            margin: 100px 0;
+            max-width: 900px;
+            margin: 50px 0;
             position: relative;
         }
 
@@ -35,7 +35,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: #f2c;
+            background: #f222cc;
             transform: translateY(-50%);
             z-index: 1;
         }
@@ -49,9 +49,9 @@
 
         .point {
             background: white;
-            border: 3px solid #f2c;
-            width: 40px;
-            height: 40px;
+            border: 3px solid #f222cc;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -59,30 +59,31 @@
             cursor: pointer;
             transition: 0.3s;
             position: relative;
+            font-size: 1.2rem;
         }
 
         .point:hover, .point.active {
-            transform: scale(1.2);
+            transform: scale(1.1);
             background: #c71585;
             color: white;
         }
 
         .point-date {
             position: absolute;
-            bottom: -30px;
+            top: -25px;
             font-size: 0.8rem;
             color: #c71585;
             font-weight: bold;
             white-space: nowrap;
         }
 
-        /* O Card agora fica posicionado acima do ponto */
+        /* --- Estilo do Balão (Desktop: Abre para Baixo) --- */
         .content-popup {
             position: absolute;
-            bottom: 60px; /* Distância acima do ícone */
+            top: 60px; /* Aparece abaixo no PC */
             left: 50%;
             transform: translateX(-50%);
-            width: 280px;
+            width: 260px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(242, 34, 204, 0.3);
@@ -90,49 +91,37 @@
             display: none;
             z-index: 100;
             text-align: center;
-            pointer-events: auto;
         }
 
-        /* Triângulo do balão */
         .content-popup::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
-            border-top: 10px solid white;
+            border-bottom: 10px solid white;
         }
 
         .content-popup img {
             width: 100%;
             border-radius: 8px;
             margin-bottom: 10px;
+            max-height: 180px;
+            object-fit: cover;
         }
 
-        .content-popup h3 {
-            margin: 5px 0;
-            color: #c71585;
-            font-size: 1.1rem;
-        }
-
-        .content-popup p {
-            font-size: 0.9rem;
-            color: #333;
-            line-height: 1.4;
-        }
-
-        /* Animações de Zoom */
+        /* Animações */
         .anim-in {
             display: block !important;
             animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform-origin: bottom center;
+            transform-origin: top center;
         }
 
         .anim-out {
             animation: zoomOut 0.3s ease-in forwards;
-            transform-origin: bottom center;
+            transform-origin: top center;
         }
 
         @keyframes zoomIn {
@@ -145,9 +134,70 @@
             to { opacity: 0; transform: translateX(-50%) scale(0.1); }
         }
 
+        /* --- Configuração Celular (Mobile) --- */
+        @media (max-width: 600px) {
+            .timeline-wrapper {
+                height: 500px;
+                width: 4px;
+                margin-left: 40px; /* Linha vai para a esquerda */
+                align-self: flex-start;
+            }
+
+            .timeline-line {
+                width: 4px;
+                height: 100%;
+                left: 0;
+                top: 0;
+                transform: none;
+            }
+
+            .points-container {
+                flex-direction: column;
+                height: 100%;
+                align-items: flex-start;
+            }
+
+            .point {
+                left: -20px; /* Alinha o círculo com a linha na esquerda */
+            }
+
+            .point-date {
+                left: 50px;
+                top: 12px;
+            }
+
+            .content-popup {
+                left: 170px; /* Abre para a direita */
+                top: 50%;
+                transform: translateY(-50%);
+                width: 220px;
+            }
+
+            .content-popup::after {
+                top: 50%;
+                left: -10px;
+                transform: translateY(-50%);
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                border-right: 10px solid white;
+                border-left: none;
+            }
+
+            @keyframes zoomIn {
+                from { opacity: 0; transform: translateY(-50%) scale(0.1); }
+                to { opacity: 1; transform: translateY(-50%) scale(1); }
+            }
+
+            @keyframes zoomOut {
+                from { opacity: 1; transform: translateY(-50%) scale(1); }
+                to { opacity: 0; transform: translateY(-50%) scale(0.1); }
+            }
+            
+            .anim-in, .anim-out { transform-origin: left center; }
+        }
+
         .counter-section {
-            margin-top: auto;
-            margin-bottom: 50px;
+            margin: 40px 0;
             text-align: center;
         }
 
@@ -155,10 +205,10 @@
             background: white;
             border: 2px solid #c71585;
             color: #c71585;
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
@@ -166,21 +216,6 @@
         #contador-box {
             margin-top: 15px;
             display: none;
-        }
-
-        #contador {
-            font-size: 1.4rem;
-            color: #c71585;
-            font-weight: bold;
-        }
-
-        @media (max-width: 600px) {
-            .timeline-wrapper { height: 400px; width: 4px; margin: 40px 0; }
-            .timeline-line { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
-            .points-container { flex-direction: column; height: 100%; align-items: center; }
-            .point-date { left: 50px; bottom: 10px; }
-            .content-popup { left: 160px; bottom: -50px; transform: translateY(-50%); }
-            .content-popup::after { display: none; }
         }
     </style>
 </head>
@@ -244,8 +279,8 @@
     <div class="counter-section">
         <button class="clock-btn" onclick="toggleContador()">⌚</button>
         <div id="contador-box">
-            <p id="contador"></p>
-            <p style="color: #555; font-size: 0.9rem;">...e contando!</p>
+            <p id="contador" style="font-weight: bold; color: #c71585; font-size: 1.2rem;"></p>
+            <p style="color: #555; font-size: 0.8rem;">...e contando!</p>
         </div>
     </div>
 
@@ -256,7 +291,6 @@
             const popup = document.getElementById(`pop-${index}`);
             const pontos = document.querySelectorAll('.point');
 
-            // Se clicar em um que já está aberto, fecha
             if (abertoAtualmente === index) {
                 fechar(popup);
                 pontos[index].classList.remove('active');
@@ -264,14 +298,11 @@
                 return;
             }
 
-            // Se clicar em outro, fecha o que estiver aberto
             if (abertoAtualmente !== null) {
-                const anterior = document.getElementById(`pop-${abertoAtualmente}`);
-                fechar(anterior);
+                fechar(document.getElementById(`pop-${abertoAtualmente}`));
                 pontos[abertoAtualmente].classList.remove('active');
             }
 
-            // Abre o novo
             popup.classList.remove('anim-out');
             popup.classList.add('anim-in');
             pontos[index].classList.add('active');
@@ -282,26 +313,20 @@
             el.classList.remove('anim-in');
             el.classList.add('anim-out');
             setTimeout(() => {
-                if (el.classList.contains('anim-out')) {
-                    el.style.display = 'none';
-                }
+                if (el.classList.contains('anim-out')) el.style.display = 'none';
             }, 300);
         }
 
         function toggleContador() {
             const box = document.getElementById('contador-box');
             if (box.style.display === 'block') {
-                box.classList.remove('anim-in');
-                box.classList.add('anim-out');
-                setTimeout(() => { box.style.display = 'none'; }, 300);
+                box.style.display = 'none';
             } else {
                 const dataInicio = new Date("2025-06-12"); 
                 const hoje = new Date();
                 const dias = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
-                document.getElementById("contador").innerText = `💗 ${dias} dias 💗`;
+                document.getElementById("contador").innerText = `💗 ${dias} dias juntos 💗`;
                 box.style.display = 'block';
-                box.classList.remove('anim-out');
-                box.classList.add('anim-in');
             }
         }
     </script>
