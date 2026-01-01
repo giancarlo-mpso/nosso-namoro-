@@ -122,17 +122,17 @@
             align-items: center;
             transition: 0.3s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            outline: none;
         }
 
-        .clock-btn:hover {
-            transform: rotate(20deg) scale(1.1);
-            background: #ffe6e6;
+        .clock-btn:active {
+            transform: scale(0.9);
         }
 
         #contador-box {
             margin-top: 20px;
             display: none;
-            animation: fadeIn 0.8s ease;
+            animation: fadeIn 0.5s ease;
         }
 
         #contador {
@@ -142,7 +142,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -178,7 +178,7 @@
     </div>
 
     <div class="counter-section">
-        <button class="clock-btn" onclick="revelarContador()" title="Quanto tempo faz?">⌚</button>
+        <button class="clock-btn" onclick="toggleContador()" title="Ver tempo">⌚</button>
         
         <div id="contador-box">
             <p id="contador"></p>
@@ -212,18 +212,23 @@
             display.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        function revelarContador() {
+        function toggleContador() {
             const box = document.getElementById('contador-box');
-            box.style.display = 'block';
             
-            const dataInicio = new Date("2025-06-12"); 
-            const hoje = new Date();
-            const diferenca = hoje - dataInicio;
-            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-            
-            document.getElementById("contador").innerText = `💗 Estamos juntos há ${dias} dias 💗`;
-            
-            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+                
+                const dataInicio = new Date("2025-06-12"); 
+                const hoje = new Date();
+                const diferenca = hoje - dataInicio;
+                const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+                
+                document.getElementById("contador").innerText = `💗 Estamos juntos há ${dias} dias 💗`;
+                
+                box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
     </script>
 </body>
