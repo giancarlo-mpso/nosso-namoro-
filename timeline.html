@@ -25,7 +25,7 @@
         .timeline-wrapper {
             width: 90%;
             max-width: 900px;
-            margin: 80px 0;
+            margin: 80px 0 150px 0;
             position: relative;
         }
 
@@ -78,17 +78,40 @@
 
         .content-popup {
             position: absolute;
-            top: 65px; 
+            top: 60px; 
             left: 50%;
             transform: translateX(-50%);
             width: 280px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             padding: 15px;
             display: none;
-            z-index: 999;
+            z-index: 9999;
             text-align: center;
+            pointer-events: none;
+        }
+
+        .content-popup img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .content-popup h3 {
+            margin: 10px 0 5px 0;
+            color: #c71585;
+            font-size: 1.2rem;
+            display: block;
+        }
+
+        .content-popup p {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.4;
+            margin: 0;
+            display: block;
         }
 
         .content-popup::after {
@@ -102,25 +125,22 @@
             border-bottom: 10px solid white;
         }
 
-        .content-popup img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .anim-in { display: block !important; animation: zoomIn 0.4s forwards; transform-origin: top center; }
+        .anim-in { display: block !important; animation: zoomIn 0.4s forwards; transform-origin: top center; pointer-events: auto; }
         .anim-out { animation: zoomOut 0.3s forwards; transform-origin: top center; }
 
         @keyframes zoomIn { from { opacity: 0; transform: translateX(-50%) scale(0.1); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
         @keyframes zoomOut { from { opacity: 1; transform: translateX(-50%) scale(1); } to { opacity: 0; transform: translateX(-50%) scale(0.1); } }
 
         .counter-section {
-            margin: 50px 0;
+            margin-bottom: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
             height: 80px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
         .clock-container {
@@ -133,7 +153,6 @@
             cursor: pointer;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
-            z-index: 5;
         }
 
         .hand {
@@ -163,7 +182,6 @@
 
         .spin-hands .hour { animation: spin 1s linear infinite; }
         .spin-hands .minute { animation: spin 0.5s linear infinite; }
-        
         .move-left { transform: translateX(-40px); }
 
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -187,16 +205,18 @@
         #contador { font-weight: bold; color: #c71585; font-size: 1.3rem; margin: 0; white-space: nowrap; }
 
         @media (max-width: 600px) {
-            .timeline-wrapper { height: 500px; width: 4px; margin-left: 30px; align-self: flex-start; }
+            .timeline-wrapper { height: 500px; width: 4px; margin: 40px 0 60px 30px; align-self: flex-start; }
             .timeline-line { width: 4px; height: 100%; left: 0; top: 0; transform: none; }
             .points-container { flex-direction: column; height: 100%; align-items: flex-start; }
             .point { left: -22px; }
             .point-date { left: 55px; top: 10px; }
-            .content-popup { left: 175px; top: 50%; transform: translateY(-50%); width: 220px; }
-            .content-popup::after { top: 50%; left: -10px; transform: translateY(-50%); border-right: 10px solid white; border-bottom: 10px solid transparent; border-top: 10px solid transparent; }
-            .counter-section { flex-direction: column; height: auto; gap: 10px; }
+            .content-popup { left: 175px; top: 50%; transform: translateY(-50%); width: 230px; }
+            .content-popup::after { top: 50%; left: -10px; transform: translateY(-50%); border-right: 10px solid white; border-bottom: 10px solid transparent; border-top: 10px solid transparent; border-left: none; }
+            .counter-section { flex-direction: column; height: auto; gap: 10px; margin-top: 20px; }
             .move-left { transform: translateY(-5px); }
             #contador-box { align-items: center; transform: translateY(10px); }
+            @keyframes zoomIn { from { opacity: 0; transform: translateY(-50%) scale(0.1); } to { opacity: 1; transform: translateY(-50%) scale(1); } }
+            @keyframes zoomOut { from { opacity: 1; transform: translateY(-50%) scale(1); } to { opacity: 0; transform: translateY(-50%) scale(0.1); } }
         }
     </style>
 </head>
@@ -282,22 +302,18 @@
         function animarRelogio() {
             const relogio = document.getElementById('meuRelogio');
             const box = document.getElementById('contador-box');
-
             if (relogio.classList.contains('move-left')) {
                 relogio.classList.remove('move-left');
                 box.classList.remove('visible');
             } else {
                 relogio.classList.add('spin-hands');
-                
                 setTimeout(() => {
                     relogio.classList.remove('spin-hands');
                     relogio.classList.add('move-left');
-                    
                     const dataInicio = new Date("2025-06-12"); 
                     const hoje = new Date();
                     const dias = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
                     document.getElementById("contador").innerText = `💗 ${dias} dias 💗`;
-                    
                     box.classList.add('visible');
                 }, 1000);
             }
