@@ -76,7 +76,6 @@
             white-space: nowrap;
         }
 
-        /* --- Estilo do Balão --- */
         .content-popup {
             position: absolute;
             top: 65px; 
@@ -92,7 +91,6 @@
             text-align: center;
         }
 
-        /* Setinha do balão para cima (PC) */
         .content-popup::after {
             content: '';
             position: absolute;
@@ -106,124 +104,93 @@
 
         .content-popup img {
             width: 100%;
-            height: auto;
             border-radius: 10px;
             margin-bottom: 10px;
-            display: block;
         }
 
-        .content-popup h3 {
-            margin: 10px 0 5px 0;
-            color: #c71585;
-            font-size: 1.2rem;
-            display: block;
-        }
+        .anim-in { display: block !important; animation: zoomIn 0.4s forwards; transform-origin: top center; }
+        .anim-out { animation: zoomOut 0.3s forwards; transform-origin: top center; }
 
-        .content-popup p {
-            font-size: 0.95rem;
-            color: #444;
-            line-height: 1.4;
-            margin: 0;
-            display: block;
-        }
-
-        /* Animações */
-        .anim-in {
-            display: block !important;
-            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transform-origin: top center;
-        }
-
-        .anim-out {
-            animation: zoomOut 0.3s ease-in forwards;
-            transform-origin: top center;
-        }
-
-        @keyframes zoomIn {
-            from { opacity: 0; transform: translateX(-50%) scale(0.1); }
-            to { opacity: 1; transform: translateX(-50%) scale(1); }
-        }
-
-        @keyframes zoomOut {
-            from { opacity: 1; transform: translateX(-50%) scale(1); }
-            to { opacity: 0; transform: translateX(-50%) scale(0.1); }
-        }
-
-        /* --- Responsivo Celular --- */
-        @media (max-width: 600px) {
-            .timeline-wrapper {
-                height: 550px;
-                width: 4px;
-                margin-left: 30px;
-                align-self: flex-start;
-            }
-            .timeline-line {
-                width: 4px;
-                height: 100%;
-                left: 0;
-                top: 0;
-                transform: none;
-            }
-            .points-container {
-                flex-direction: column;
-                height: 100%;
-                align-items: flex-start;
-            }
-            .point {
-                left: -22px;
-            }
-            .point-date {
-                left: 55px;
-                top: 10px;
-            }
-            .content-popup {
-                left: 175px; 
-                top: 50%;
-                transform: translateY(-50%);
-                width: 240px;
-            }
-            /* Ajuste da setinha para o lado no celular */
-            .content-popup::after {
-                top: 50%;
-                left: -10px;
-                transform: translateY(-50%);
-                border-top: 10px solid transparent;
-                border-bottom: 10px solid transparent;
-                border-right: 10px solid white;
-                border-bottom: none;
-                border-left: none;
-            }
-            @keyframes zoomIn {
-                from { opacity: 0; transform: translateY(-50%) scale(0.1); }
-                to { opacity: 1; transform: translateY(-50%) scale(1); }
-            }
-            @keyframes zoomOut {
-                from { opacity: 1; transform: translateY(-50%) scale(1); }
-                to { opacity: 0; transform: translateY(-50%) scale(0.1); }
-            }
-            .anim-in, .anim-out { transform-origin: left center; }
-        }
+        @keyframes zoomIn { from { opacity: 0; transform: translateX(-50%) scale(0.1); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
+        @keyframes zoomOut { from { opacity: 1; transform: translateX(-50%) scale(1); } to { opacity: 0; transform: translateX(-50%) scale(0.1); } }
 
         .counter-section {
             margin: 50px 0;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            height: 80px;
         }
 
-        .clock-btn {
-            background: white;
-            border: 2px solid #c71585;
-            color: #c71585;
+        .clock-container {
             width: 60px;
             height: 60px;
+            border: 4px solid #c71585;
             border-radius: 50%;
-            font-size: 1.8rem;
+            position: relative;
+            background: white;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            flex-shrink: 0;
         }
 
+        .hand {
+            position: absolute;
+            background: #c71585;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+        }
+
+        .hour { width: 4px; height: 15px; margin-left: -2px; }
+        .minute { width: 3px; height: 22px; margin-left: -1.5px; }
+
+        .clock-container::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #c71585;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .spin-hands .hour { animation: spin 1s linear infinite; }
+        .spin-hands .minute { animation: spin 0.5s linear infinite; }
+        .move-left { transform: translateX(-100px); }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
         #contador-box {
-            margin-top: 15px;
-            display: none;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        #contador-box.visible {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        #contador { font-weight: bold; color: #c71585; font-size: 1.3rem; margin: 0; }
+
+        @media (max-width: 600px) {
+            .timeline-wrapper { height: 500px; width: 4px; margin-left: 30px; align-self: flex-start; }
+            .timeline-line { width: 4px; height: 100%; left: 0; top: 0; transform: none; }
+            .points-container { flex-direction: column; height: 100%; align-items: flex-start; }
+            .point { left: -22px; }
+            .point-date { left: 55px; top: 10px; }
+            .content-popup { left: 175px; top: 50%; transform: translateY(-50%); width: 220px; }
+            .content-popup::after { top: 50%; left: -10px; transform: translateY(-50%); border-right: 10px solid white; border-bottom: 10px solid transparent; border-top: 10px solid transparent; }
+            .counter-section { flex-direction: column; height: auto; gap: 10px; }
+            .move-left { transform: translateY(-10px); }
         }
     </style>
 </head>
@@ -241,7 +208,6 @@
                     <p>Foi nesse dia que disse pra você: "gosto de tu".</p>
                 </div>
             </div>
-
             <div class="point" onclick="togglePopup(1)">☕<span class="point-date">17/04</span>
                 <div id="pop-1" class="content-popup">
                     <img src="images/encontro.jpg">
@@ -249,7 +215,6 @@
                     <p>Fomos numa cafeteria e eu estava super nervoso!</p>
                 </div>
             </div>
-
             <div class="point" onclick="togglePopup(2)">💋<span class="point-date">30/04</span>
                 <div id="pop-2" class="content-popup">
                     <img src="images/beijo.jpg">
@@ -257,7 +222,6 @@
                     <p>Na escola, um momento inesquecível só nosso.</p>
                 </div>
             </div>
-
             <div class="point" onclick="togglePopup(3)">🎬<span class="point-date">04/05</span>
                 <div id="pop-3" class="content-popup">
                     <img src="images/filme.jpg">
@@ -265,7 +229,6 @@
                     <p>Assistimos "Pecadores" juntos!</p>
                 </div>
             </div>
-
             <div class="point" onclick="togglePopup(4)">🎂<span class="point-date">30/05</span>
                 <div id="pop-4" class="content-popup">
                     <img src="images/aniversario.jpg">
@@ -273,22 +236,24 @@
                     <p>Flores, brincos e conhecendo seus pais.</p>
                 </div>
             </div>
-
             <div class="point" onclick="togglePopup(5)">💍<span class="point-date">12/06</span>
                 <div id="pop-5" class="content-popup">
                     <img src="images/pedido.jpg">
                     <h3>Pedido de Namoro</h3>
-                    <p>No Parque da Sementeira, você disse SIM!</p>
+                    <p>No Parque da Sementeira, ao pôr do sol, você disse SIM!</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="counter-section">
-        <button class="clock-btn" onclick="toggleContador()">⌚</button>
+        <div class="clock-container" id="meuRelogio" onclick="animarRelogio()">
+            <div class="hand hour"></div>
+            <div class="hand minute"></div>
+        </div>
         <div id="contador-box">
-            <p id="contador" style="font-weight: bold; color: #c71585; font-size: 1.4rem;"></p>
-            <p style="color: #555; font-size: 0.9rem;">...e contando!</p>
+            <p id="contador"></p>
+            <p style="color: #555; font-size: 0.8rem; margin: 0;">...e contando!</p>
         </div>
     </div>
 
@@ -298,45 +263,37 @@
         function togglePopup(index) {
             const popup = document.getElementById(`pop-${index}`);
             const pontos = document.querySelectorAll('.point');
-
-            if (abertoAtualmente === index) {
-                fechar(popup);
-                pontos[index].classList.remove('active');
-                abertoAtualmente = null;
-                return;
-            }
-
-            if (abertoAtualmente !== null) {
-                fechar(document.getElementById(`pop-${abertoAtualmente}`));
-                pontos[abertoAtualmente].classList.remove('active');
-            }
-
-            popup.classList.remove('anim-out');
-            popup.classList.add('anim-in');
-            pontos[index].classList.add('active');
-            abertoAtualmente = index;
+            if (abertoAtualmente === index) { fechar(popup); pontos[index].classList.remove('active'); abertoAtualmente = null; return; }
+            if (abertoAtualmente !== null) { fechar(document.getElementById(`pop-${abertoAtualmente}`)); pontos[abertoAtualmente].classList.remove('active'); }
+            popup.classList.remove('anim-out'); popup.classList.add('anim-in'); pontos[index].classList.add('active'); abertoAtualmente = index;
         }
 
         function fechar(el) {
-            el.classList.remove('anim-in');
-            el.classList.add('anim-out');
-            setTimeout(() => {
-                if (el.classList.contains('anim-out')) {
-                    el.style.display = 'none';
-                }
-            }, 300);
+            el.classList.remove('anim-in'); el.classList.add('anim-out');
+            setTimeout(() => { if (el.classList.contains('anim-out')) el.style.display = 'none'; }, 300);
         }
 
-        function toggleContador() {
+        function animarRelogio() {
+            const relogio = document.getElementById('meuRelogio');
             const box = document.getElementById('contador-box');
-            if (box.style.display === 'block') {
-                box.style.display = 'none';
+
+            if (relogio.classList.contains('move-left')) {
+                relogio.classList.remove('move-left');
+                box.classList.remove('visible');
             } else {
-                const dataInicio = new Date("2025-06-12"); 
-                const hoje = new Date();
-                const dias = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
-                document.getElementById("contador").innerText = `💗 ${dias} dias juntos 💗`;
-                box.style.display = 'block';
+                relogio.classList.add('spin-hands');
+                
+                setTimeout(() => {
+                    relogio.classList.remove('spin-hands');
+                    relogio.classList.add('move-left');
+                    
+                    const dataInicio = new Date("2025-06-12"); 
+                    const hoje = new Date();
+                    const dias = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
+                    document.getElementById("contador").innerText = `💗 ${dias} dias 💗`;
+                    
+                    box.classList.add('visible');
+                }, 1000);
             }
         }
     </script>
