@@ -25,8 +25,9 @@
         .timeline-wrapper {
             width: 90%;
             max-width: 900px;
-            margin: 80px 0 150px 0;
+            margin: 80px 0 180px 0; 
             position: relative;
+            z-index: 100; 
         }
 
         .timeline-line {
@@ -87,9 +88,8 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             padding: 15px;
             display: none;
-            z-index: 9999;
+            z-index: 99999; 
             text-align: center;
-            pointer-events: none;
         }
 
         .content-popup img {
@@ -125,7 +125,7 @@
             border-bottom: 10px solid white;
         }
 
-        .anim-in { display: block !important; animation: zoomIn 0.4s forwards; transform-origin: top center; pointer-events: auto; }
+        .anim-in { display: block !important; animation: zoomIn 0.4s forwards; transform-origin: top center; }
         .anim-out { animation: zoomOut 0.3s forwards; transform-origin: top center; }
 
         @keyframes zoomIn { from { opacity: 0; transform: translateX(-50%) scale(0.1); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
@@ -140,7 +140,7 @@
             height: 80px;
             width: 100%;
             position: relative;
-            z-index: 10;
+            z-index: 10; 
         }
 
         .clock-container {
@@ -212,9 +212,7 @@
             .point-date { left: 55px; top: 10px; }
             .content-popup { left: 175px; top: 50%; transform: translateY(-50%); width: 230px; }
             .content-popup::after { top: 50%; left: -10px; transform: translateY(-50%); border-right: 10px solid white; border-bottom: 10px solid transparent; border-top: 10px solid transparent; border-left: none; }
-            .counter-section { flex-direction: column; height: auto; gap: 10px; margin-top: 20px; }
-            .move-left { transform: translateY(-5px); }
-            #contador-box { align-items: center; transform: translateY(10px); }
+            .counter-section { flex-direction: column; height: auto; gap: 10px; margin-top: 20px; z-index: 5; }
             @keyframes zoomIn { from { opacity: 0; transform: translateY(-50%) scale(0.1); } to { opacity: 1; transform: translateY(-50%) scale(1); } }
             @keyframes zoomOut { from { opacity: 1; transform: translateY(-50%) scale(1); } to { opacity: 0; transform: translateY(-50%) scale(0.1); } }
         }
@@ -289,14 +287,34 @@
         function togglePopup(index) {
             const popup = document.getElementById(`pop-${index}`);
             const pontos = document.querySelectorAll('.point');
-            if (abertoAtualmente === index) { fechar(popup); pontos[index].classList.remove('active'); abertoAtualmente = null; return; }
-            if (abertoAtualmente !== null) { fechar(document.getElementById(`pop-${abertoAtualmente}`)); pontos[abertoAtualmente].classList.remove('active'); }
-            popup.classList.remove('anim-out'); popup.classList.add('anim-in'); pontos[index].classList.add('active'); abertoAtualmente = index;
+            const counterSection = document.querySelector('.counter-section');
+
+            if (abertoAtualmente === index) { 
+                fechar(popup); 
+                pontos[index].classList.remove('active'); 
+                abertoAtualmente = null;
+                counterSection.style.zIndex = "10"; 
+                return; 
+            }
+
+            if (abertoAtualmente !== null) { 
+                fechar(document.getElementById(`pop-${abertoAtualmente}`)); 
+                pontos[abertoAtualmente].classList.remove('active'); 
+            }
+
+            counterSection.style.zIndex = "1"; 
+            popup.classList.remove('anim-out'); 
+            popup.classList.add('anim-in'); 
+            pontos[index].classList.add('active'); 
+            abertoAtualmente = index;
         }
 
         function fechar(el) {
-            el.classList.remove('anim-in'); el.classList.add('anim-out');
-            setTimeout(() => { if (el.classList.contains('anim-out')) el.style.display = 'none'; }, 300);
+            el.classList.remove('anim-in'); 
+            el.classList.add('anim-out');
+            setTimeout(() => { 
+                if (el.classList.contains('anim-out')) el.style.display = 'none'; 
+            }, 300);
         }
 
         function animarRelogio() {
